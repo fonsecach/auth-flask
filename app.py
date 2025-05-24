@@ -5,15 +5,21 @@ import os
 
 load_dotenv()
 
-app = Flask(__name__)
-db = SQLAlchemy(app)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+def create_app():
+    app = Flask(__name__)
 
+    # Configurações
+    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-@app.route('/')
-def root():
-    return 'Aplication is running!'
+    # Inicializa extensões
+    db.init_app(app)
+
+    return app
+
+db = SQLAlchemy()
+app = create_app()
 
 
 if __name__ == '__main__':
