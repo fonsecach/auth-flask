@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from infrastructure.database import db
 from dotenv import load_dotenv
 import os
 
@@ -18,7 +18,7 @@ def create_app():
 
     return app
 
-db = SQLAlchemy()
+
 app = create_app()
 
 
