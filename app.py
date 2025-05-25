@@ -1,27 +1,19 @@
 from flask import Flask
 from infrastructure.database import db
-from dotenv import load_dotenv
-import os
+from infrastructure.config import Config
 
-load_dotenv()
+app = Flask(__name__)
+app.config["SECRET_KEY"] = Config.SECRET_KEY
+app.config["SQLALCHEMY_DATABASE_URI"] = Config.SQLALCHEMY_DATABASE_URI
 
-def create_app():
-    app = Flask(__name__)
-
-    # Configurações
-    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-    # Inicializa extensões
-    db.init_app(app)
-
-    return app
+db.init_app(app)
+# Session <- conexão ativa
 
 
-app = create_app()
+@app.route("/", methods=["GET"])
+def hello_world():
+    return "Aplicação Flask com SQLAlchemy e Flask-Login!"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
-    
