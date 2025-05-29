@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from infrastructure.database import db
 from infrastructure.config import Config
-from flask_login import LoginManager, login_user, current_user
+from flask_login import LoginManager, login_user, current_user, logout_user, login_required
 
 import models
 from models.user import User
@@ -43,6 +43,30 @@ def login():
             return jsonify({'message': 'Autenticacao realizada com sucesso!'})
         
     return jsonify({"message": "Credenciais invalidas!"}), 400
+
+
+@app.route('/logout', methods=['GET'])
+@login_required
+def logout():
+    if current_user.is_authenticated:
+        logout_user()
+        return jsonify({'message': 'Logout realizado com sucesso!'})
+    return jsonify({'message': 'Nenhum usuario autenticado!'}), 400
+
+
+@app.route('/user', methods=['POST'])
+def create_user():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    
+    if username and password:
+        user = User(username=username, password=password)
+        db.session.add(user)
+        db.session.commit()
+        return jsonify({'message': 'Usuario criado com sucesso!'})
+    
+    return jsonify({"message": "Usuario ja existente ou credenciais invalidas!"}), 400
 
 
 @app.route("/", methods=["GET"])
