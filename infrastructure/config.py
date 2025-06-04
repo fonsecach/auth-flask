@@ -15,8 +15,8 @@ loaded_successfully = load_dotenv(dotenv_path) # Carrega o .env encontrado
 print(f"DEBUG: .env carregado com sucesso? {loaded_successfully}")
 
 # Verificar o valor de DATABASE_URL IMEDIATAMENTE após load_dotenv
-db_url_after_load = os.getenv("DATABASE_URL")
-print(f"DEBUG: Valor de DATABASE_URL (após load_dotenv): '{db_url_after_load}'")
+# db_url_after_load = os.getenv("DATABASE_URL")
+# print(f"DEBUG: Valor de DATABASE_URL (após load_dotenv): '{db_url_after_load}'")
 # --- Fim das Modificações para Debug ---
 
 class Config:
@@ -25,7 +25,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # --- Adicionar Debug para a URI final ---
-    print(f"DEBUG: Config.SQLALCHEMY_DATABASE_URI definida como: '{SQLALCHEMY_DATABASE_URI}'")
+    # print(f"DEBUG: Config.SQLALCHEMY_DATABASE_URI definida como: '{SQLALCHEMY_DATABASE_URI}'")
     # --- Fim do Debug para a URI final ---
 
     DEBUG = os.getenv("DEBUG", "True").lower() == "true"
